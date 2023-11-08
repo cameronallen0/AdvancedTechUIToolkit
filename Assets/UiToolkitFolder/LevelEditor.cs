@@ -6,12 +6,13 @@ using System.Collections.Generic;
 
 public class LevelEditor : EditorWindow
 {
-    private List<GameObject> spawnedObjects = new List<GameObject>();
+    private readonly List<GameObject> spawnedObjects = new List<GameObject>();
     private float spawnRadius;
     private float spacingR;
     private Vector3 spawnLoc;
     private ObjectField prefabField;
     private ObjectField spawnField;
+    private ObjectField parentField;
     private IntegerField spawnRadiusField;
     private IntegerField numberOfObjectsField;
     private FloatField spacingField;
@@ -28,6 +29,9 @@ public class LevelEditor : EditorWindow
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UiToolkitFolder/LevelEditorUXML.uxml");
         var root = rootVisualElement;
         visualTree.CloneTree(root);
+
+        parentField = root.Q<ObjectField>("parentField");
+        parentField.objectType = typeof(GameObject);
 
         spawnField = root.Q<ObjectField>("spawnLoc");
         spawnField.objectType = typeof(GameObject);
@@ -99,6 +103,7 @@ public class LevelEditor : EditorWindow
         Vector3 spawnPosition;
 
         GameObject prefab = prefabField.value as GameObject;
+        GameObject parentObj = parentField.value as GameObject;
 
         int maxAttempts = 10;
         int attempt = 0;
@@ -125,11 +130,12 @@ public class LevelEditor : EditorWindow
             }
 
             if (!overlap)
-            {
+            {      
                 GameObject pObject = Instantiate(prefab, new Vector3 (randomX, fixedY, randomZ) ,randomRotation);
                 pObject.transform.position = spawnPosition;
+                pObject.transform.parent = parentObj.transform;
                 pObject.name = (prefab.name) + ("_") + (spawnedObjects.Count + 1);
-                return pObject;
+                return pObject;                       
             }
 
             attempt++;
@@ -157,6 +163,11 @@ public class LevelEditor : EditorWindow
             DestroyImmediate(pObject);
         }
         spawnedObjects.Clear();
+    }
+
+    void OnSceneGUI()
+    {
+        //enter brush logic
     }
 }
 

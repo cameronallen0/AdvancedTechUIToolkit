@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <ui:Label tabindex="-1" text="Level Editor" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 20px; -unity-font-style: bold;" />
-    <ui:GroupBox text="Foliage Brush" name="foliageGroup" style="font-size: 18px; -unity-font-style: bold;">
+    <ui:GroupBox text="Foliage Tool" name="foliageGroup" style="font-size: 18px; -unity-font-style: bold;">
+        <uie:ObjectField label="Parent Object" name="parentField" style="font-size: 14px; -unity-font-style: normal;" />
         <ui:GroupBox name="radiusGroup">
             <ui:Label tabindex="-1" text="Spawn Parameters" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; -unity-font-style: bold;" />
             <uie:ObjectField label="Spawn Location" name="spawnLoc" style="-unity-font-style: normal; font-size: 14px;" />
