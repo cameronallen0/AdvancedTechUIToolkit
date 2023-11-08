@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Label tabindex="-1" text="Level Editor" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 20px; -unity-font-style: bold;" />
+    <ui:GroupBox text="Foliage Brush" name="foliageGroup" style="font-size: 18px; -unity-font-style: bold;">
+        <ui:GroupBox name="radiusGroup">
+            <ui:Label tabindex="-1" text="Spawn Parameters" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; -unity-font-style: bold;" />
+            <uie:ObjectField label="Spawn Location" name="spawnLoc" style="-unity-font-style: normal; font-size: 14px;" />
+            <ui:IntegerField label="Spawn Radius" value="0" name="spawnRadius" style="-unity-font-style: normal; font-size: 14px;" />
+        </ui:GroupBox>
+        <ui:GroupBox name="spawnGroup">
+            <ui:Label tabindex="-1" text="Prefab Parameters" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; -unity-font-style: bold;" />
+            <uie:ObjectField label="Prefab" name="objectField" style="font-size: 14px; -unity-font-style: normal;" />
+            <ui:FloatField label="Prefab Spacing:" value="42.2" name="spacing" style="font-size: 14px; -unity-font-style: normal;" />
+            <ui:IntegerField label="Spawn Number Of Selected Prefab:" value="0" name="numberOfObjects" style="font-size: 14px; -unity-font-style: normal;" />
+            <ui:Button text="Spawn Number Of Selected Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spawnNumber" style="font-size: 14px; -unity-font-style: normal;" />
+            <ui:Button text="Spawn Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spawn" style="opacity: 1; font-size: 14px; -unity-font-style: normal;" />
+        </ui:GroupBox>
+        <ui:Button text="Update Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="updateSettings" style="font-size: 14px; -unity-font-style: normal;" />
+    </ui:GroupBox>
+    <ui:GroupBox name="deleteGroup">
+        <ui:Label tabindex="-1" text="Deleting" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; -unity-font-style: bold;" />
+        <ui:Button text="Delete Latest Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="delete" />
+        <ui:Button text="Delete All" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deleteAll" />
+    </ui:GroupBox>
+</ui:UXML>
