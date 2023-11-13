@@ -11,6 +11,8 @@
             <ui:Label tabindex="-1" text="Prefab Parameters" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; -unity-font-style: bold;" />
             <uie:ObjectField label="Prefab" name="objectField" style="font-size: 14px; -unity-font-style: normal;" />
             <ui:FloatField label="Prefab Spacing:" value="42.2" name="spacing" style="font-size: 14px; -unity-font-style: normal;" />
+            <ui:FloatField label="Min Scale" value="0" name="minScale" style="-unity-font-style: normal; font-size: 14px;" />
+            <ui:FloatField label="Max Scale" value="0" name="maxScale" style="-unity-font-style: normal; font-size: 14px;" />
             <ui:IntegerField label="Spawn Number Of Selected Prefab:" value="0" name="numberOfObjects" style="font-size: 14px; -unity-font-style: normal;" />
             <ui:Button text="Spawn Number Of Selected Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spawnNumber" style="font-size: 14px; -unity-font-style: normal;" />
             <ui:Button text="Spawn Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spawn" style="opacity: 1; font-size: 14px; -unity-font-style: normal;" />

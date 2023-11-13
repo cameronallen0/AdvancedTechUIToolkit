@@ -9,6 +9,9 @@ public class LevelEditor : EditorWindow
     private readonly List<GameObject> spawnedObjects = new List<GameObject>();
     private float spawnRadius;
     private float spacingR;
+    private float minScale;
+    private float maxScale;
+
     private Vector3 spawnLoc;
     private ObjectField prefabField;
     private ObjectField spawnField;
@@ -16,6 +19,9 @@ public class LevelEditor : EditorWindow
     private IntegerField spawnRadiusField;
     private IntegerField numberOfObjectsField;
     private FloatField spacingField;
+
+    private FloatField minScaleField;
+    private FloatField maxScaleField;
 
     [MenuItem("Tools/Level Editor")]
     public static void ShowWindow()
@@ -41,6 +47,12 @@ public class LevelEditor : EditorWindow
 
         prefabField = root.Q<ObjectField>("objectField");
         prefabField.objectType = typeof(GameObject);
+
+        minScaleField = root.Q<FloatField>("minScale");
+        minScaleField.value = minScale;
+
+        maxScaleField = root.Q<FloatField>("maxScale");
+        maxScaleField.value = maxScale;
 
         var spawnButton = root.Q<Button>("spawn");
         spawnButton.clicked += SpawnButtonClicked;
@@ -75,6 +87,9 @@ public class LevelEditor : EditorWindow
 
         spacingR = spacingField.value;
         Debug.Log("The Prefab Spacing is " + spacingR);
+
+        minScale = minScaleField.value;
+        maxScale = maxScaleField.value;
     }
 
     private void SpawnButtonClicked()
@@ -99,7 +114,7 @@ public class LevelEditor : EditorWindow
     private GameObject SpawnObject()
     {
         float randomX, randomZ;
-        float fixedY = spawnLoc.y;
+        float pSizeX, pSizeY, pSizeZ;
         Vector3 spawnPosition;
 
         GameObject prefab = prefabField.value as GameObject;
@@ -111,31 +126,44 @@ public class LevelEditor : EditorWindow
         {
             randomX = Random.Range(spawnLoc.x - spawnRadius, spawnLoc.x + spawnRadius);
             randomZ = Random.Range(spawnLoc.z - spawnRadius, spawnLoc.z + spawnRadius);
-            spawnPosition = new Vector3(randomX, fixedY, randomZ);
+            pSizeX = Random.Range(minScale, maxScale);
+            pSizeY = pSizeX;
+            pSizeZ = pSizeX;
+
+            Ray ray = new Ray(new Vector3(randomX, 1000f, randomZ), Vector3.down);
+
+            RaycastHit hit;
+
 
             Quaternion randomRotation = Quaternion.Euler(
                 Random.Range(0f, 0f),
                 Random.Range(0f, 360f),
                 Random.Range(0f, 0f));
 
-
             bool overlap = false;
-            foreach (var pObject in spawnedObjects)
-            {
-                if (Vector3.Distance(spawnPosition, pObject.transform.position) < spacingR)
-                {
-                    overlap = true;
-                    break;
-                }
-            }
 
-            if (!overlap)
-            {      
-                GameObject pObject = Instantiate(prefab, new Vector3 (randomX, fixedY, randomZ) ,randomRotation);
-                pObject.transform.position = spawnPosition;
-                pObject.transform.parent = parentObj.transform;
-                pObject.name = (prefab.name) + ("_") + (spawnedObjects.Count + 1);
-                return pObject;                       
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                spawnPosition = new Vector3(randomX, hit.point.y, randomZ);
+
+                foreach (var pObject in spawnedObjects)
+                {
+                    if (Vector3.Distance(spawnPosition, pObject.transform.position) < spacingR)
+                    {
+                        overlap = true;
+                        break;
+                    }
+                }
+
+                if (!overlap)
+                {
+                    GameObject pObject = Instantiate(prefab, new Vector3(randomX, hit.point.y, randomZ), randomRotation);
+                    pObject.transform.position = spawnPosition;
+                    pObject.transform.parent = parentObj.transform;
+                    pObject.transform.localScale = new Vector3(pSizeX, pSizeY, pSizeZ);
+                    pObject.name = (prefab.name) + ("_") + (spawnedObjects.Count + 1);
+                    return pObject;
+                }
             }
 
             attempt++;
@@ -164,10 +192,7 @@ public class LevelEditor : EditorWindow
         }
         spawnedObjects.Clear();
     }
-
-    void OnSceneGUI()
-    {
-        //enter brush logic
-    }
 }
+
+
 
