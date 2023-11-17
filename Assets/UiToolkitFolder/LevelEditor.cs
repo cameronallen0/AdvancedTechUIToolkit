@@ -22,6 +22,8 @@ public class LevelEditor : EditorWindow
 
     private FloatField minScaleField;
     private FloatField maxScaleField;
+    private LayerMaskField layerMaskField;
+    private LayerMask groundLayerMask;
 
     [MenuItem("Tools/Level Editor")]
     public static void ShowWindow()
@@ -73,6 +75,9 @@ public class LevelEditor : EditorWindow
 
         var deleteAllButton = root.Q<Button>("deleteAll");
         deleteAllButton.clicked += DeleteAllButtonClicked;
+
+        layerMaskField = root.Q<LayerMaskField>("layerField");
+        layerMaskField.value = groundLayerMask;
     }
 
     private void UpdateFoliageSettings()
@@ -90,6 +95,8 @@ public class LevelEditor : EditorWindow
 
         minScale = minScaleField.value;
         maxScale = maxScaleField.value;
+
+        groundLayerMask = layerMaskField.value;
     }
 
     private void SpawnButtonClicked()
@@ -142,7 +149,7 @@ public class LevelEditor : EditorWindow
 
             bool overlap = false;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayerMask))
             {
                 spawnPosition = new Vector3(randomX, hit.point.y, randomZ);
 
