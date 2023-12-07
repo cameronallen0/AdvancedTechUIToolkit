@@ -32,7 +32,7 @@ public class LevelEditor : EditorWindow
     [MenuItem("Tools/Foliage Tool")]
     public static void ShowWindow()
     {
-        var window = GetWindow<LevelEditor>();
+        LevelEditor window = GetWindow<LevelEditor>();
         window.titleContent = new GUIContent("Foliage Tool");
     }
 
@@ -78,7 +78,7 @@ public class LevelEditor : EditorWindow
         deleteAllButton.clicked += DeleteAllButtonClicked;
 
         folderObjects = Resources.LoadAll<GameObject>("Prefabs");
-        foreach(GameObject i in folderObjects)
+        foreach (GameObject i in folderObjects)
         {
             folderList.Add(i);
         }
