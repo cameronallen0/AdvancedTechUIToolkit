@@ -6,26 +6,31 @@ using System.Collections.Generic;
 
 public class LevelEditor : EditorWindow
 {
+    //list for spawned objects
     private readonly List<GameObject> spawnedObjects = new List<GameObject>();
 
+    //list for prefabs in folder
     public GameObject[] folderObjects;
     public List<GameObject> folderList;
 
-    private float spawnRadius;
-    private float spacingR;
-    private float minScale;
-    private float maxScale;
-
+    //spawn and parent variable
     private Vector3 spawnLoc;
     private ObjectField spawnField;
     private ObjectField parentField;
-    
+    private float spawnRadius;
+    private float spacingR;
+
     private IntegerField spawnRadiusField;
     private IntegerField numberOfObjectsField;
     private FloatField spacingField;
 
+    //scale variables
     private FloatField minScaleField;
     private FloatField maxScaleField;
+    private float minScale;
+    private float maxScale;
+
+    //layer variables
     private LayerMaskField layerMaskField;
     private LayerMask groundLayerMask;
 
@@ -84,6 +89,7 @@ public class LevelEditor : EditorWindow
         }
     }
 
+    //update all setting changes
     private void UpdateFoliageSettings()
     {
         GameObject spawnArea = spawnField.value as GameObject;
@@ -103,7 +109,7 @@ public class LevelEditor : EditorWindow
         groundLayerMask = layerMaskField.value;
     }
 
-    //sets number 
+    //sets number of prefabs to spawn
     private void SpawnNumberOfObjects()
     {
         int numToSpawn = numberOfObjectsField.value;
@@ -117,6 +123,8 @@ public class LevelEditor : EditorWindow
         }
     }
 
+    //handles spawning of prefabs, raycast for location and has rotation
+    //sets parent of object
     private GameObject SpawnObject()
     {
         float randomX, randomZ;
@@ -179,7 +187,7 @@ public class LevelEditor : EditorWindow
         return null;
     }
 
-
+    //deletes the latest spawned object
     private void DeleteButtonClicked()
     {
         if (spawnedObjects.Count > 0)
@@ -190,6 +198,7 @@ public class LevelEditor : EditorWindow
         }
     }
 
+    //delete all objects in list unless its been saved
     private void DeleteAllButtonClicked()
     {
         foreach (var pObject in spawnedObjects)
@@ -199,6 +208,3 @@ public class LevelEditor : EditorWindow
         spawnedObjects.Clear();
     }
 }
-
-
-
