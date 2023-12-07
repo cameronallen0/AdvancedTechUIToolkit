@@ -7,15 +7,19 @@ using System.Collections.Generic;
 public class LevelEditor : EditorWindow
 {
     private readonly List<GameObject> spawnedObjects = new List<GameObject>();
+
+    public GameObject[] folderObjects;
+    public List<GameObject> folderList;
+
     private float spawnRadius;
     private float spacingR;
     private float minScale;
     private float maxScale;
 
     private Vector3 spawnLoc;
-    private ObjectField prefabField;
     private ObjectField spawnField;
     private ObjectField parentField;
+    
     private IntegerField spawnRadiusField;
     private IntegerField numberOfObjectsField;
     private FloatField spacingField;
@@ -25,30 +29,27 @@ public class LevelEditor : EditorWindow
     private LayerMaskField layerMaskField;
     private LayerMask groundLayerMask;
 
-    [MenuItem("Tools/Level Editor")]
+    [MenuItem("Tools/Foliage Tool")]
     public static void ShowWindow()
     {
         var window = GetWindow<LevelEditor>();
-        window.titleContent = new GUIContent("Level Editor");
+        window.titleContent = new GUIContent("Foliage Tool");
     }
 
     private void OnEnable()
     {
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UiToolkitFolder/LevelEditorUXML.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UiToolkitFolder/FoliageToolUXML.uxml");
         var root = rootVisualElement;
         visualTree.CloneTree(root);
 
-        parentField = root.Q<ObjectField>("parentField");
-        parentField.objectType = typeof(GameObject);
-
-        spawnField = root.Q<ObjectField>("spawnLoc");
+        spawnField = root.Q<ObjectField>("spawnArea");
         spawnField.objectType = typeof(GameObject);
 
-        spawnRadiusField = root.Q<IntegerField>("spawnRadius");
-        spawnRadiusField.value = (int)spawnRadius;
+        parentField = root.Q<ObjectField>("parentObject");
+        parentField.objectType = typeof(GameObject);
 
-        prefabField = root.Q<ObjectField>("objectField");
-        prefabField.objectType = typeof(GameObject);
+        spacingField = root.Q<FloatField>("prefabSpacing");
+        spacingField.value = spacingR;
 
         minScaleField = root.Q<FloatField>("minScale");
         minScaleField.value = minScale;
@@ -56,28 +57,31 @@ public class LevelEditor : EditorWindow
         maxScaleField = root.Q<FloatField>("maxScale");
         maxScaleField.value = maxScale;
 
-        var spawnButton = root.Q<Button>("spawn");
-        spawnButton.clicked += SpawnButtonClicked;
+        spawnRadiusField = root.Q<IntegerField>("spawnRadius");
+        spawnRadiusField.value = (int)spawnRadius;
 
-        spacingField = root.Q<FloatField>("spacing");
-        spacingField.value = spacingR;
+        numberOfObjectsField = root.Q<IntegerField>("numberObjects");
 
-        numberOfObjectsField = root.Q<IntegerField>("numberOfObjects");
-
-        var numberButton = root.Q<Button>("spawnNumber");
-        numberButton.clicked += SpawnNumberOfObjects;
+        layerMaskField = root.Q<LayerMaskField>("layerMask");
+        layerMaskField.value = groundLayerMask;
 
         var updateButton = root.Q<Button>("updateSettings");
         updateButton.clicked += UpdateFoliageSettings;
 
-        var deleteButton = root.Q<Button>("delete");
+        var spawnButton = root.Q<Button>("spawnPrefab");
+        spawnButton.clicked += SpawnNumberOfObjects;
+
+        var deleteButton = root.Q<Button>("deleteLatest");
         deleteButton.clicked += DeleteButtonClicked;
 
         var deleteAllButton = root.Q<Button>("deleteAll");
         deleteAllButton.clicked += DeleteAllButtonClicked;
 
-        layerMaskField = root.Q<LayerMaskField>("layerField");
-        layerMaskField.value = groundLayerMask;
+        folderObjects = Resources.LoadAll<GameObject>("Prefabs");
+        foreach(GameObject i in folderObjects)
+        {
+            folderList.Add(i);
+        }
     }
 
     private void UpdateFoliageSettings()
@@ -99,12 +103,7 @@ public class LevelEditor : EditorWindow
         groundLayerMask = layerMaskField.value;
     }
 
-    private void SpawnButtonClicked()
-    {
-        GameObject pObject = SpawnObject();
-        spawnedObjects.Add(pObject);
-    }
-
+    //sets number 
     private void SpawnNumberOfObjects()
     {
         int numToSpawn = numberOfObjectsField.value;
@@ -124,8 +123,9 @@ public class LevelEditor : EditorWindow
         float pSizeX, pSizeY, pSizeZ;
         Vector3 spawnPosition;
 
-        GameObject prefab = prefabField.value as GameObject;
         GameObject parentObj = parentField.value as GameObject;
+
+        int folderIndex = Random.Range(0, folderList.Count);
 
         int maxAttempts = 10;
         int attempt = 0;
@@ -140,7 +140,6 @@ public class LevelEditor : EditorWindow
             Ray ray = new Ray(new Vector3(randomX, 1000f, randomZ), Vector3.down);
 
             RaycastHit hit;
-
 
             Quaternion randomRotation = Quaternion.Euler(
                 Random.Range(0f, 0f),
@@ -164,11 +163,11 @@ public class LevelEditor : EditorWindow
 
                 if (!overlap)
                 {
-                    GameObject pObject = Instantiate(prefab, new Vector3(randomX, hit.point.y, randomZ), randomRotation);
+                    GameObject pObject = Instantiate(folderList[folderIndex], new Vector3(randomX, hit.point.y, randomZ), randomRotation);
                     pObject.transform.position = spawnPosition;
                     pObject.transform.parent = parentObj.transform;
                     pObject.transform.localScale = new Vector3(pSizeX, pSizeY, pSizeZ);
-                    pObject.name = (prefab.name) + ("_") + (spawnedObjects.Count + 1);
+                    pObject.name = folderList[folderIndex].name + "_" + (spawnedObjects.Count + 1);
                     return pObject;
                 }
             }

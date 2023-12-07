@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Label tabindex="-1" text="Foliage Tool" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-left; -unity-font: url(&apos;project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=ebbfcdfac64e14fe9a05b520915f8e67&amp;type=3#NotInter-Regular&apos;); -unity-font-definition: initial;" />
+    <uie:ObjectField label="Spawn Area" name="spawnArea" />
+    <uie:ObjectField label="Parent Object" name="parentObject" />
+    <ui:FloatField label="Prefab Spacing" value="0" name="prefabSpacing" />
+    <ui:FloatField label="Min Scale" value="0" name="minScale" />
+    <ui:FloatField label="Max Scale" value="0" name="maxScale" />
+    <ui:IntegerField label="Spawn Radius" value="0" name="spawnRadius" />
+    <ui:IntegerField label="Spawn Objects" value="0" name="numberObjects" />
+    <uie:LayerMaskField label="Layer" name="layerMask" value="8" />
+    <ui:Button text="Update Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="updateSettings" />
+    <ui:Button text="Spawn" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spawnPrefab" />
+    <ui:Button text="Delete Latest Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deleteLatest" />
+    <ui:Button text="Delete All" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deleteAll" />
+</ui:UXML>
