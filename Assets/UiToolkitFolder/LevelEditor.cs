@@ -12,6 +12,8 @@ public class LevelEditor : EditorWindow
     //list for prefabs in folder
     public GameObject[] folderObjects;
     public List<GameObject> folderList;
+    private TextField folderField;
+    public string folderName;
 
     //spawn and parent variable
     private Vector3 spawnLoc;
@@ -46,6 +48,9 @@ public class LevelEditor : EditorWindow
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UiToolkitFolder/FoliageToolUXML.uxml");
         var root = rootVisualElement;
         visualTree.CloneTree(root);
+
+        folderField = root.Q<TextField>("folderField");
+        folderField.value = folderName;
 
         spawnField = root.Q<ObjectField>("spawnArea");
         spawnField.objectType = typeof(GameObject);
@@ -95,18 +100,17 @@ public class LevelEditor : EditorWindow
         GameObject spawnArea = spawnField.value as GameObject;
 
         spawnLoc = spawnArea.transform.position;
-        Debug.Log(spawnLoc);
 
         spawnRadius = spawnRadiusField.value;
-        Debug.Log("The spawn radius is " + spawnRadius);
 
         spacingR = spacingField.value;
-        Debug.Log("The Prefab Spacing is " + spacingR);
 
         minScale = minScaleField.value;
         maxScale = maxScaleField.value;
 
         groundLayerMask = layerMaskField.value;
+
+        folderName = folderField.value;
     }
 
     //sets number of prefabs to spawn
