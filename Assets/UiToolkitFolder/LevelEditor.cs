@@ -35,9 +35,7 @@ public class LevelEditor : EditorWindow
     private LayerMask groundLayerMask;
 
     //prefab creator
-    private TextField prefabShape;
-    public string prefabShapeType;
-    private GameObject selectedShape;
+    
 
     [MenuItem("Tools/Foliage Tool")]
     public static void ShowWindow()
@@ -93,11 +91,8 @@ public class LevelEditor : EditorWindow
             folderList.Add(i);
         }
 
-        //prefabShape = root.Q<TextField>("prefabShape");
-        //prefabShape.value = prefabShapeType;
-
-        //var createPrefabButton = root.Q<Button>("createPrefab");
-        //createPrefabButton.clicked += CreatePrefab;
+        var createPrefabButton = root.Q<Button>("createPrefab");
+        createPrefabButton.clicked += CreatePrefab;
     }
 
     //update all setting changes
@@ -223,4 +218,18 @@ public class LevelEditor : EditorWindow
         }
         spawnedObjects.Clear();
     }
+    
+    //when a new prefab is created reload the foliage tool as it breaks at the moment
+    private void CreatePrefab()
+    {
+        var newPrefab = new GameObject();
+        GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        childPrefab.transform.parent = newPrefab.transform;
+        childPrefab.transform.position = new Vector3(0, 0.5f, 0);
+        newPrefab.name = "NEW_PREFAB";
+        PrefabUtility.SaveAsPrefabAsset(newPrefab, "Assets/Resources/Prefabs/" + newPrefab.name + ".prefab");
+        folderList.Add(newPrefab);
+        //DestroyImmediate(newPrefab);
+    }
+
 }

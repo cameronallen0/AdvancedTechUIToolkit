@@ -13,6 +13,5 @@
     <ui:Button text="Delete Latest Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deleteLatest" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; padding-top: 15px; padding-bottom: 15px;" />
     <ui:Button text="Delete All" parse-escape-sequences="true" display-tooltip-when-elided="true" name="deleteAll" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; padding-top: 15px; padding-bottom: 15px;" />
     <ui:Label tabindex="-1" text="Prefab Creator" parse-escape-sequences="true" display-tooltip-when-elided="true" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; font-size: 20px; -unity-font-style: bold;" />
-    <ui:TextField picking-mode="Ignore" label="Prefab Shape" tooltip="Cube, Sphere or Cylinder" name="prefabShape" />
     <ui:Button text="Create New Prefab" parse-escape-sequences="true" display-tooltip-when-elided="true" name="createPrefab" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; padding-top: 15px; padding-bottom: 15px;" />
 </ui:UXML>
