@@ -227,9 +227,7 @@ public class LevelEditor : EditorWindow
         childPrefab.transform.parent = newPrefab.transform;
         childPrefab.transform.position = new Vector3(0, 0.5f, 0);
         newPrefab.name = "NEW_PREFAB";
-        PrefabUtility.SaveAsPrefabAsset(newPrefab, "Assets/Resources/Prefabs/" + newPrefab.name + ".prefab");
-        folderList.Add(newPrefab);
-        //DestroyImmediate(newPrefab);
+        PrefabUtility.SaveAsPrefabAsset(newPrefab, "Assets/NewPrefabs/" + newPrefab.name + ".prefab");
+        DestroyImmediate(newPrefab);
     }
-
 }
