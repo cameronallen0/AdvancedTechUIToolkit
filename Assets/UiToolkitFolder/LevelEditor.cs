@@ -12,8 +12,6 @@ public class LevelEditor : EditorWindow
     //list for prefabs in folder
     public GameObject[] folderObjects;
     public List<GameObject> folderList;
-    private TextField folderField;
-    public string folderName;
 
     //spawn and parent variable
     private Vector3 spawnLoc;
@@ -36,6 +34,11 @@ public class LevelEditor : EditorWindow
     private LayerMaskField layerMaskField;
     private LayerMask groundLayerMask;
 
+    //prefab creator
+    private TextField prefabShape;
+    public string prefabShapeType;
+    private GameObject selectedShape;
+
     [MenuItem("Tools/Foliage Tool")]
     public static void ShowWindow()
     {
@@ -48,9 +51,6 @@ public class LevelEditor : EditorWindow
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UiToolkitFolder/FoliageToolUXML.uxml");
         var root = rootVisualElement;
         visualTree.CloneTree(root);
-
-        folderField = root.Q<TextField>("folderField");
-        folderField.value = folderName;
 
         spawnField = root.Q<ObjectField>("spawnArea");
         spawnField.objectType = typeof(GameObject);
@@ -92,6 +92,12 @@ public class LevelEditor : EditorWindow
         {
             folderList.Add(i);
         }
+
+        //prefabShape = root.Q<TextField>("prefabShape");
+        //prefabShape.value = prefabShapeType;
+
+        //var createPrefabButton = root.Q<Button>("createPrefab");
+        //createPrefabButton.clicked += CreatePrefab;
     }
 
     //update all setting changes
@@ -109,8 +115,6 @@ public class LevelEditor : EditorWindow
         maxScale = maxScaleField.value;
 
         groundLayerMask = layerMaskField.value;
-
-        folderName = folderField.value;
     }
 
     //sets number of prefabs to spawn
