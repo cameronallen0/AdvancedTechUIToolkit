@@ -141,7 +141,8 @@ public class LevelEditor : EditorWindow
 
         GameObject parentObj = parentField.value as GameObject;
 
-        int folderIndex = Random.Range(0, folderList.Count);
+        int v = Random.Range(0, folderList.Count);
+        int folderIndex = v;
 
         int maxAttempts = 10;
         int attempt = 0;
@@ -170,7 +171,13 @@ public class LevelEditor : EditorWindow
 
                 foreach (var pObject in spawnedObjects)
                 {
-                    if (Vector3.Distance(spawnPosition, pObject.transform.position) < spacingR)
+                    Vector3 otherSize = pObject.transform.localScale;
+                    Vector3 otherHalfSize = otherSize / 2f;
+
+                    Vector3 thisHalfSize = new Vector3(pSizeX, pSizeY, pSizeZ) / 2f;
+
+                    if (Vector3.Distance(spawnPosition, pObject.transform.position) <
+                        (spacingR + Vector3.Distance(thisHalfSize, otherHalfSize)))
                     {
                         overlap = true;
                         break;
@@ -179,11 +186,11 @@ public class LevelEditor : EditorWindow
 
                 if (!overlap)
                 {
-                    GameObject pObject = Instantiate(folderList[folderIndex], new Vector3(randomX, hit.point.y, randomZ), randomRotation);
-                    pObject.transform.position = spawnPosition;
+                    GameObject pObject = Instantiate(folderList[folderIndex], spawnPosition, randomRotation);
                     pObject.transform.parent = parentObj.transform;
                     pObject.transform.localScale = new Vector3(pSizeX, pSizeY, pSizeZ);
                     pObject.name = folderList[folderIndex].name + "_" + (spawnedObjects.Count + 1);
+                    spawnedObjects.Add(pObject);
                     return pObject;
                 }
             }
@@ -194,6 +201,7 @@ public class LevelEditor : EditorWindow
         Debug.LogWarning("No spawning spaces in radius");
         return null;
     }
+
 
     //deletes the latest spawned object
     private void DeleteButtonClicked()
