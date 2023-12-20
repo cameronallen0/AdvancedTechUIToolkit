@@ -11,7 +11,7 @@ public class LevelEditor : EditorWindow
 
     //list for prefabs in folder
     public GameObject[] folderObjects;
-    public List<GameObject> folderList;
+    public static List<GameObject> folderList = new List<GameObject>();
 
     //spawn and parent variable
     private Vector3 spawnLoc;
@@ -36,6 +36,7 @@ public class LevelEditor : EditorWindow
 
     //prefab creator
     private TextField prefabNameField;
+    private TextField prefabShapeField;
 
     [MenuItem("Tools/Foliage Tool")]
     public static void ShowWindow()
@@ -93,8 +94,10 @@ public class LevelEditor : EditorWindow
 
         prefabNameField = root.Q<TextField>("prefabName");
 
+        prefabShapeField = root.Q<TextField>("prefabShape");
+
         var createPrefabButton = root.Q<Button>("createPrefab");
-        createPrefabButton.clicked += () => CreatePrefab(prefabNameField.value);
+        createPrefabButton.clicked += () => CreatePrefab(prefabNameField.value, prefabShapeField.value);
     }
 
     //update all setting changes
@@ -220,16 +223,36 @@ public class LevelEditor : EditorWindow
         }
         spawnedObjects.Clear();
     }
-    
-    //when a new prefab is created reload the foliage tool as it breaks at the moment
-    private void CreatePrefab(string name)
+
+    //creates a basic cube prefab that can be named and is added to the prefabs folder
+    private void CreatePrefab(string name, string shape)
     {
         var newPrefab = new GameObject();
-        GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        childPrefab.transform.parent = newPrefab.transform;
-        childPrefab.transform.position = new Vector3(0, 0.5f, 0);
-        PrefabUtility.SaveAsPrefabAsset(newPrefab, "Assets/NewPrefabs/" + name + ".prefab");
-        DestroyImmediate(newPrefab);
-        Debug.Log(name + " saved to NewPrefabs folder");
+        if(shape == "Cube")
+        {
+            GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            childPrefab.transform.parent = newPrefab.transform;
+            childPrefab.transform.position = new Vector3(0, 0.5f, 0);
+        }
+        if(shape == "Sphere")
+        {
+            GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            childPrefab.transform.parent = newPrefab.transform;
+            childPrefab.transform.position = new Vector3(0, 0.5f, 0);
+        }
+        if (shape == "Cylinder")
+        {
+            GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            childPrefab.transform.parent = newPrefab.transform;
+            childPrefab.transform.position = new Vector3(0, 0.5f, 0);
+        }
+
+        folderList.Add(newPrefab);
+
+        string prefabPath = "Assets/Resources/Prefabs/" + name + ".prefab";
+        PrefabUtility.SaveAsPrefabAsset(newPrefab, prefabPath);
+        AssetDatabase.Refresh();
+
+        Debug.Log(name + " saved to Prefabs folder");
     }
 }
