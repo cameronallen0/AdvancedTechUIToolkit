@@ -224,22 +224,25 @@ public class LevelEditor : EditorWindow
         spawnedObjects.Clear();
     }
 
-    //creates a basic cube prefab that can be named and is added to the prefabs folder
+    //creates a basic shape prefab that can be named and is added to the prefabs folder
     private void CreatePrefab(string name, string shape)
     {
         var newPrefab = new GameObject();
+        //creates cube prefab
         if(shape == "Cube")
         {
             GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
             childPrefab.transform.parent = newPrefab.transform;
             childPrefab.transform.position = new Vector3(0, 0.5f, 0);
         }
+        //creates sphere prefab
         if(shape == "Sphere")
         {
             GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             childPrefab.transform.parent = newPrefab.transform;
             childPrefab.transform.position = new Vector3(0, 0.5f, 0);
         }
+        //creates cylinder prefab
         if (shape == "Cylinder")
         {
             GameObject childPrefab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
